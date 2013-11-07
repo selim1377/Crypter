@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "NSString+Crypter.h"
 
 @interface Crypter : NSObject {
 }
 
 +(Crypter *) sharedInstance;
--(NSString *)decryptCString:(char *)textToDecrypt withKey:(NSString *)key;
+-(NSString *)decryptCString:(const char*)textToDecrypt withKey:(NSString *)key;
 @end

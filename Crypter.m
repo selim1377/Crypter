@@ -8,7 +8,6 @@
 
 #import "Crypter.h"
 
-
 @implementation Crypter
 
 static Crypter * crypter = nil;
@@ -31,11 +30,9 @@ static Crypter * crypter = nil;
     return self;
 }
 
--(NSString *)decryptCString:(char *)textToDecrypt withKey:(NSString *)key
+-(NSString *)decryptCString:(const char*)textToDecrypt withKey:(NSString *)key
 {
-	
-	
-	// check if the key is empty
+    // check if the key is empty
 	if ([key isEqualToString:@""]) {
 		return @"Key can not be empty";
 	}
@@ -69,7 +66,8 @@ static Crypter * crypter = nil;
 	}
 	
 	//perform encryption decryption
-	char* textToDecryptChars = textToDecrypt;
+	char* textToDecryptChars = malloc(strlen(textToDecrypt)+1);
+    strcpy(textToDecryptChars, textToDecrypt);
 	
 	for (int i=0, j=0; i<strlen(textToDecryptChars); ++i) {
 		
