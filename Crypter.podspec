@@ -18,5 +18,5 @@ Pod::Spec.new do |s|
       :git => "https://github.com/selim1377/Crypter.git", 
       :tag => '0.0.1'
   }
-  s.source_files  =  'Crypter/*.{h,m}'
+  s.source_files  =  '*.{h,m}'
 end
