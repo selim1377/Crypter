@@ -31,123 +31,12 @@ static Crypter * crypter = nil;
     return self;
 }
 
--(BOOL)isPurchased
-{
-	purchased =   [[NSUserDefaults standardUserDefaults] boolForKey:@"isProUpgradePurchased"];
-	
-	if (!purchased) {
-		purchased = NO;
-	}
-	return purchased;
-}
-
-
--(NSString *)descryptString:(NSString *)textToDecrypt withKey:(NSString *)key
-{
-	
-	
-	
-	if ([textToDecrypt isEqualToString:@""] || !textToDecrypt) {
-		
-		return @"";
-	}
-	
-	
-	key = @"Ravanelli";
-	
-	// check if the key is empty
-	if ([key isEqualToString:@""]) {
-		
-		return @"Key can not be empty";
-	}
-	
-	//Remove spaces
-	key = [key stringByReplacingOccurrencesOfString:@" "
-										 withString:@""];
-	// Check key length
-	if ([key length]<8) {
-		return @"Key length can not be less than 8";
-	}
-	
-	
-	// fix key length to 32
-	int key_len = [key length];
-	if (key_len > 32) {
-		key_len = 32;
-	}
-	
-	// create a key array
-	NSMutableArray *k = [[NSMutableArray alloc] initWithCapacity:key_len];
-	
-	
-	char* keyChars =  [key UTF8String];
-	// fill key array with  bitwiseAND of ith key char and 0x1F
-	for (int i =0; i<key_len; i++) {
-		int produced = keyChars[i];
-		int bitwiseAnded = produced & 0x1F;
-		
-		
-		[k addObject: [NSNumber numberWithInt:bitwiseAnded]];
-		
-	}
-
-	
-	//perform encryption decryption
-	char* textToDecryptChars = [textToDecrypt UTF8String];
-	
-	for (int i=0, j=0; i<strlen(textToDecryptChars); ++i) {
-		
-		int e = textToDecryptChars[i];
-		
-		if (e < 0) {
-			e += 256;
-		}
-		
-		int bitwiseAND = e & 0xE0;
-		
-		int kchr = [[k objectAtIndex:j] intValue];
-		
-				
-		if (bitwiseAND) {
-			textToDecryptChars[i] = e ^ kchr;
-			
-		}
-		
-		j = (j+1) % key_len;
-	}
-	
-	
-	NSString *returnString = @"";
-	[k release];
-	
-	returnString = [NSString stringWithCString:textToDecryptChars encoding:NSUTF8StringEncoding];
-	
-	
-	
-	return returnString;
-}
-
-
 -(NSString *)decryptCString:(char *)textToDecrypt withKey:(NSString *)key
 {
 	
 	
-	//return [NSString stringWithCString:textToDecrypt encoding:NSUTF8StringEncoding];
-	
-	
-	/*
-	
-	if ([textToDecrypt isEqualToString:@""] || !textToDecrypt) {
-		
-		return @"";
-	}
-	*/
-	
-	key = @"Q35a0-;5PMQ3o0x";
-	
 	// check if the key is empty
 	if ([key isEqualToString:@""]) {
-		
 		return @"Key can not be empty";
 	}
 	
@@ -167,20 +56,17 @@ static Crypter * crypter = nil;
 	}
 	
 	// create a key array
-	NSMutableArray *k = [[NSMutableArray alloc] initWithCapacity:key_len];
+	NSMutableArray *k = [[NSMutableArray alloc] initWithCapacity:key_len];	
 	
-	
-	char* keyChars =  [key UTF8String];
+	const char* keyChars =  [key UTF8String];
+    
 	// fill key array with  bitwiseAND of ith key char and 0x1F
 	for (int i =0; i<key_len; i++) {
 		int produced = keyChars[i];
-		int bitwiseAnded = produced & 0x1F;
-		
-		
+		int bitwiseAnded = produced & 0x1F;		
 		[k addObject: [NSNumber numberWithInt:bitwiseAnded]];
 		
 	}
-	
 	
 	//perform encryption decryption
 	char* textToDecryptChars = textToDecrypt;
@@ -211,9 +97,6 @@ static Crypter * crypter = nil;
 	[k release];
 	
 	returnString = [NSString stringWithCString:textToDecryptChars encoding:NSUTF8StringEncoding];
-	
-	
-	
 	return returnString;
 }
 @end

@@ -10,15 +10,8 @@
 
 
 @interface Crypter : NSObject {
-
-	BOOL purchased;
 }
 
--(BOOL)isPurchased;
-
 +(Crypter *) sharedInstance;
--(NSString *)descryptString:(NSString *)textToDecrypt withKey:(NSString *)key;
 -(NSString *)decryptCString:(char *)textToDecrypt withKey:(NSString *)key;
-
-
 @end
